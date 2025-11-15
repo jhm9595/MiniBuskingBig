@@ -7,6 +7,9 @@ iOS, Android, Web 크로스플랫폼 애플리케이션입니다.
 - **프론트엔드 Mobile**: React Native + Expo (iOS/Android)
 - **공유**: API 클라이언트, 타입 정의
 
+> 💡 **이 프로젝트를 템플릿으로 사용하고 싶으신가요?**
+> [TEMPLATE_GUIDE.md](TEMPLATE_GUIDE.md)를 참조하여 새 프로젝트를 시작하세요!
+
 ## 디렉터리 구조
 
 ```
