@@ -3,12 +3,14 @@
 ## 📥 프로젝트 클론 후 초기 설정
 
 ### 1️⃣ 저장소 클론
+
 ```bash
 git clone https://github.com/jhm9595/MiniBuskingBig.git
 cd MiniBuskingBig
 ```
 
 ### 2️⃣ 의존성 설치
+
 ```bash
 # Backend (Maven)
 cd backend
@@ -26,6 +28,7 @@ npm install
 ### 3️⃣ 프로젝트 실행
 
 #### Backend
+
 ```bash
 cd backend
 mvn spring-boot:run
@@ -34,6 +37,7 @@ java -jar target/backend-0.0.1-SNAPSHOT.jar
 ```
 
 #### Frontend Web
+
 ```bash
 cd frontend-web
 npm run dev
@@ -41,6 +45,7 @@ npm run dev
 ```
 
 #### Frontend Mobile
+
 ```bash
 cd frontend-mobile
 npm start
@@ -50,6 +55,7 @@ npm start
 ## 📦 왜 node_modules를 올리지 않나?
 
 ### ✅ 올바른 방식 (현재 프로젝트)
+
 ```
 repository/ (GitHub)
 ├── backend/
@@ -65,12 +71,13 @@ repository/ (GitHub)
 ```
 
 ### ❌ 잘못된 방식 (피할 것)
+
 ```
 repository/ (GitHub)
 ├── ...
 └── frontend-web/
     ├── node_modules/    ✗ 325MB+ 낭비!
-    
+
 문제점:
 - 저장소 크기 폭증 → 느린 속도
 - 플랫폼 호환성 문제 (Windows/Mac/Linux)
@@ -92,21 +99,23 @@ git ls-files | grep node_modules
 
 ## 💾 용량 비교
 
-| 상황 | 저장소 크기 |
-|------|-----------|
-| **node_modules 제외** (현재) | ~150 MB |
-| **node_modules 포함** | ~475 MB+ |
-| **저장소 용량 절감** | **70% 감소!** |
+| 상황                         | 저장소 크기   |
+| ---------------------------- | ------------- |
+| **node_modules 제외** (현재) | ~150 MB       |
+| **node_modules 포함**        | ~475 MB+      |
+| **저장소 용량 절감**         | **70% 감소!** |
 
 ## 🚀 새로운 팀원 온보딩 시간
 
 ### ✅ 올바른 방식 (현재)
+
 ```
 git clone → npm install → 완료 (1~2분)
 클론 시간: ~30초, 의존성 설치: ~1분
 ```
 
 ### ❌ node_modules 포함 시
+
 ```
 git clone → 완료 (5~10분)
 클론 시간: ~5분 이상 (네트워크에 따라 10분 이상)

@@ -72,12 +72,14 @@ export function MyComponent() {
 ```
 
 **API**:
+
 - `data: T | null` - 응답 데이터
 - `loading: boolean` - 로딩 상태
 - `error: string | null` - 에러 메시지
 - `refetch: () => Promise<void>` - 수동 재요청
 
 **옵션**:
+
 ```tsx
 {
   skip?: boolean;           // true면 요청 건너뜀
@@ -126,6 +128,7 @@ export function App() {
 ```
 
 **콜백 예시**:
+
 ```tsx
 const { data, loading, error } = useFetch<User>("/api/user", {
   skip: false,

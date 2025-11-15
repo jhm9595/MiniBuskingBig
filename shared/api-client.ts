@@ -2,7 +2,40 @@
  * API Client - Shared between Web and Mobile
  */
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+// Determine API base URL from several environment sources.
+// - Vite: import.meta.env.VITE_API_URL
+// - CRA-style: process.env.REACT_APP_API_URL
+// - Generic VITE env via process.env.VITE_API_URL
+// Fallback to localhost:8080 for local development.
+function getApiBaseUrl(): string {
+  // Prefer well-known env names, fall back to empty string for proxy.
+  try {
+    // CRA-style env
+    // @ts-ignore
+    if (typeof process !== "undefined" && process.env?.REACT_APP_API_URL) {
+      // @ts-ignore
+      return process.env.REACT_APP_API_URL;
+    }
+    // Generic VITE env exposed via process in some setups
+    // @ts-ignore
+    if (typeof process !== "undefined" && process.env?.VITE_API_URL) {
+      // @ts-ignore
+      return process.env.VITE_API_URL;
+    }
+  } catch (e) {
+    // ignore and fall back
+  }
+
+  // Return empty string to use relative URLs for Vite proxy
+  return "";
+}
+
+const API_BASE_URL = getApiBaseUrl();
+
+// Debug: expose chosen base URL when running in dev tools
+if (typeof console !== "undefined") {
+  console.debug("[api-client] API_BASE_URL=", API_BASE_URL);
+}
 
 export interface ApiResponse<T> {
   data: T;
@@ -13,11 +46,15 @@ export interface ApiResponse<T> {
 export const apiClient = {
   async get<T>(endpoint: string): Promise<T> {
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`);
+      const url = `${API_BASE_URL}${endpoint}`;
+      if (typeof console !== "undefined")
+        console.debug(`[api-client] GET ${url}`);
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
       }
-      return (await response.text()) as T;
+      const text = await response.text();
+      return text as unknown as T;
     } catch (error) {
       console.error(`GET ${endpoint} failed:`, error);
       throw error;
@@ -26,7 +63,10 @@ export const apiClient = {
 
   async post<T>(endpoint: string, data: unknown): Promise<T> {
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const url = `${API_BASE_URL}${endpoint}`;
+      if (typeof console !== "undefined")
+        console.debug(`[api-client] POST ${url}`, data);
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -43,7 +83,10 @@ export const apiClient = {
 
   async put<T>(endpoint: string, data: unknown): Promise<T> {
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const url = `${API_BASE_URL}${endpoint}`;
+      if (typeof console !== "undefined")
+        console.debug(`[api-client] PUT ${url}`, data);
+      const response = await fetch(url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -60,7 +103,10 @@ export const apiClient = {
 
   async delete<T>(endpoint: string): Promise<T> {
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const url = `${API_BASE_URL}${endpoint}`;
+      if (typeof console !== "undefined")
+        console.debug(`[api-client] DELETE ${url}`);
+      const response = await fetch(url, {
         method: "DELETE",
       });
       if (!response.ok) {
