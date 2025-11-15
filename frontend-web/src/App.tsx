@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { apiClient } from "../../shared/api-client";
+import React from "react";
+import { useFetch } from "./hooks";
 
 export default function App(): React.ReactElement {
-  const [msg, setMsg] = useState<string>("");
-
-  useEffect(() => {
-    apiClient
-      .get<string>("/api/hello")
-      .then((text) => setMsg(text))
-      .catch(() => setMsg("No backend response"));
-  }, []);
+  const { data: msg, loading, error } = useFetch<string>("/api/hello");
 
   return (
     <div style={{ padding: 20 }}>
       <h1>MiniBuskingBig</h1>
-      <p>Backend says: {msg}</p>
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+      {!loading && msg && <p>Backend says: {msg}</p>}
     </div>
   );
 }

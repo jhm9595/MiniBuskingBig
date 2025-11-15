@@ -43,6 +43,101 @@ npm install
 npm start
 ```
 
+## 프론트엔드 커스텀 훅
+
+### 📌 개요
+
+Web/Mobile에서 API 호출과 상태 관리를 일관되게 처리하기 위해 커스텀 훅을 제공합니다.
+
+### `useApi<T>` - 수동 API 호출
+
+API를 직접 제어해야 할 때 사용합니다.
+
+```tsx
+// Web / Mobile 동일 사용
+import { useApi } from "./hooks";
+
+export function MyComponent() {
+  const { data, loading, error, refetch } = useApi<UserData>("/api/users/1");
+
+  return (
+    <div>
+      {loading && <span>로딩 중...</span>}
+      {error && <span>에러: {error}</span>}
+      {data && <p>사용자: {data.name}</p>}
+      <button onClick={refetch}>다시 불러오기</button>
+    </div>
+  );
+}
+```
+
+**API**:
+- `data: T | null` - 응답 데이터
+- `loading: boolean` - 로딩 상태
+- `error: string | null` - 에러 메시지
+- `refetch: () => Promise<void>` - 수동 재요청
+
+**옵션**:
+```tsx
+{
+  skip?: boolean;           // true면 요청 건너뜀
+  onSuccess?: (data: T) => void;  // 성공 콜백
+  onError?: (error: Error) => void;  // 에러 콜백
+}
+```
+
+### `useFetch<T>` - 자동 데이터 페칭
+
+컴포넌트 마운트 시 자동으로 데이터를 가져옵니다.
+
+```tsx
+// Web
+import { useFetch } from "./hooks";
+
+export function App() {
+  const { data: msg, loading, error } = useFetch<string>("/api/hello");
+
+  return (
+    <div>
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+      {!loading && msg && <p>Backend says: {msg}</p>}
+    </div>
+  );
+}
+```
+
+```tsx
+// Mobile
+import { useFetch } from "./hooks";
+import { View, Text, ActivityIndicator } from "react-native";
+
+export function App() {
+  const { data: msg, loading, error } = useFetch<string>("/api/hello");
+
+  return (
+    <View>
+      {loading && <ActivityIndicator size="large" />}
+      {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
+      {!loading && msg && <Text>Backend says: {msg}</Text>}
+    </View>
+  );
+}
+```
+
+**콜백 예시**:
+```tsx
+const { data, loading, error } = useFetch<User>("/api/user", {
+  skip: false,
+  onSuccess: (user) => {
+    console.log("사용자 로드됨:", user.name);
+  },
+  onError: (err) => {
+    console.error("실패:", err.message);
+  },
+});
+```
+
 ## Java 개발 규칙 (실무 체크리스트)
 
 ### 1️⃣ 코드 스타일 / 네이밍 규칙

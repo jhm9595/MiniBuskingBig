@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { apiClient } from "../../shared/api-client";
+import React from "react";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { useFetch } from "./hooks";
 
 export default function App(): React.ReactElement {
-  const [msg, setMsg] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    apiClient
-      .get<string>("/api/hello")
-      .then((text) => setMsg(text))
-      .catch(() => setMsg("No backend response"))
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: msg, loading, error } = useFetch<string>("/api/hello");
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>MiniBuskingBig</Text>
-      <Text style={styles.text}>
-        {loading ? "Loading..." : `Backend says: ${msg}`}
-      </Text>
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
+      {error && <Text style={styles.error}>Error: {error}</Text>}
+      {!loading && msg && <Text style={styles.text}>Backend says: {msg}</Text>}
     </View>
   );
 }
@@ -39,5 +30,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: "#666",
+  },
+  error: {
+    fontSize: 16,
+    color: "red",
   },
 });
