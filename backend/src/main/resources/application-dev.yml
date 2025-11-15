@@ -1,0 +1,51 @@
+spring:
+  # H2 Database (개발용)
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # Redis (개발용 - 로컬)
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  # JPA
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop # 개발 환경에서는 매번 재생성
+
+  # Flyway
+  flyway:
+    enabled: false # 개발환경에서는 Flyway 비활성화 (H2 사용)
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.minibuskingbig: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# CORS (개발용)
+cors:
+  allowed-origins:
+    - http://localhost:3000
+    - http://localhost:5173
+    - http://localhost:4173
+
+# 채팅 컨테이너 (개발용 - 로컬 Docker)
+chat:
+  container:
+    enabled: false # 개발 환경에서는 로컬 WebSocket 서버 사용
+    local-url: http://localhost:8081

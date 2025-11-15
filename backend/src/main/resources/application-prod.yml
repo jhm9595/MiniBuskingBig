@@ -1,0 +1,62 @@
+spring:
+  # MySQL Database (프로덕션)
+  datasource:
+    url: ${DATABASE_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  # Redis (프로덕션)
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+
+  # JPA
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate # 프로덕션에서는 항상 validate
+
+  # Flyway
+  flyway:
+    enabled: true
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.minibuskingbig: INFO
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+  file:
+    name: /var/log/minibuskingbig/application.log
+    max-size: 100MB
+    max-history: 30
+
+# CORS (프로덕션)
+cors:
+  allowed-origins:
+    - https://minibuskingbig.com
+    - https://www.minibuskingbig.com
+    - https://app.minibuskingbig.com
+
+# 채팅 컨테이너 (프로덕션 - AWS Fargate)
+chat:
+  container:
+    enabled: true
+
+# Security
+server:
+  ssl:
+    enabled: ${SSL_ENABLED:false}
+    key-store: ${SSL_KEY_STORE}
+    key-store-password: ${SSL_KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
