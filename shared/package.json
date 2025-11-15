@@ -1,0 +1,8 @@
+{
+  "name": "@minibuskingbig/shared",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Shared utilities and types for MiniBuskingBig",
+  "main": "index.ts",
+  "types": "index.ts"
+}

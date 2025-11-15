@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build and Test (Multi-Platform)
 
 on:
   push:
@@ -9,51 +9,45 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: "21"
           distribution: "temurin"
           cache: maven
-
       - name: Build backend
-        run: |
-          cd backend
-          mvn -B clean package
-
+        run: cd backend && mvn -B clean package
       - name: Run backend tests
-        run: |
-          cd backend
-          mvn -B test
+        run: cd backend && mvn -B test
 
-  frontend:
+  frontend-web:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
-
+          cache-dependency-path: frontend-web/package-lock.json
       - name: Install dependencies
-        run: |
-          cd frontend
-          npm ci
+        run: cd frontend-web && npm ci
+      - name: Build
+        run: cd frontend-web && npm run build
+      - name: Test
+        run: cd frontend-web && npm test
 
-      - name: Build frontend
-        run: |
-          cd frontend
-          npm run build
-
-      - name: Run frontend tests
-        run: |
-          cd frontend
-          npm test
+  frontend-mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend-mobile/package-lock.json
+      - name: Install dependencies
+        run: cd frontend-mobile && npm ci
