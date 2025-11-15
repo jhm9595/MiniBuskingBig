@@ -3,21 +3,23 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "next dev -p 5173",
+    "build": "next build",
+    "start": "next start -p 5173",
+    "lint": "next lint",
     "test": "echo \"No tests configured\" && exit 0"
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "next": "14.0.4"
   },
   "devDependencies": {
-    "vite": "4.3.9",
-    "@vitejs/plugin-react": "3.1.0",
     "typescript": "5.2.2",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.0",
-    "@types/node": "20.3.1"
+    "@types/node": "20.3.1",
+    "eslint": "8.55.0",
+    "eslint-config-next": "14.0.4"
   }
 }

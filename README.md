@@ -3,7 +3,7 @@
 iOS, Android, Web 크로스플랫폼 애플리케이션입니다.
 
 - **백엔드**: Java Spring Boot (REST API)
-- **프론트엔드 Web**: React + TypeScript + Vite
+- **프론트엔드 Web**: Next.js 14 + TypeScript + App Router
 - **프론트엔드 Mobile**: React Native + Expo (iOS/Android)
 - **공유**: API 클라이언트, 타입 정의
 
@@ -12,7 +12,7 @@ iOS, Android, Web 크로스플랫폼 애플리케이션입니다.
 ```
 MiniBuskingBig/
  backend/              # Java Spring Boot (포트 8080)
- frontend-web/         # React Web (포트 5173)
+ frontend-web/         # Next.js Web (포트 5173)
  frontend-mobile/      # React Native + Expo (iOS/Android)
  shared/              # 공유 API 클라이언트, 타입
  .github/workflows/   # CI/CD 파이프라인
@@ -34,7 +34,7 @@ docker-compose down
 ```
 
 **접속:**
-- 프론트엔드: http://localhost
+- 프론트엔드: http://localhost:5173
 - 백엔드 API: http://localhost:8080
 
 ### 💻 로컬 환경에서 실행
@@ -315,14 +315,16 @@ MiniBuskingBig/
 │   ├── Dockerfile            # 프로덕션 Dockerfile
 │   └── pom.xml              # Maven 설정
 │
-├── frontend-web/              # React Web 프론트엔드
+├── frontend-web/              # Next.js Web 프론트엔드
 │   ├── src/
+│   │   ├── app/             # Next.js App Router
+│   │   │   ├── layout.tsx  # 루트 레이아웃
+│   │   │   ├── page.tsx    # 홈 페이지
+│   │   │   └── globals.css # 전역 스타일
 │   │   ├── hooks/           # 커스텀 훅 (useApi, useFetch)
-│   │   ├── components/      # React 컴포넌트
-│   │   └── App.tsx
-│   ├── Dockerfile           # 프로덕션 Dockerfile
-│   ├── nginx.conf           # Nginx 설정 (프록시)
-│   ├── vite.config.ts       # Vite 설정 (프록시)
+│   │   └── components/      # React 컴포넌트
+│   ├── Dockerfile           # 프로덕션 Dockerfile (Standalone)
+│   ├── next.config.js       # Next.js 설정 (API Rewrites)
 │   └── package.json
 │
 ├── frontend-mobile/          # React Native 모바일

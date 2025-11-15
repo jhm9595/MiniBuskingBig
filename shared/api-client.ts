@@ -3,13 +3,19 @@
  */
 
 // Determine API base URL from several environment sources.
+// - Next.js: process.env.NEXT_PUBLIC_API_URL
 // - Vite: import.meta.env.VITE_API_URL
 // - CRA-style: process.env.REACT_APP_API_URL
-// - Generic VITE env via process.env.VITE_API_URL
-// Fallback to localhost:8080 for local development.
+// Fallback to empty string for proxy (Next.js rewrites).
 function getApiBaseUrl(): string {
   // Prefer well-known env names, fall back to empty string for proxy.
   try {
+    // Next.js public env
+    // @ts-ignore
+    if (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_API_URL) {
+      // @ts-ignore
+      return process.env.NEXT_PUBLIC_API_URL;
+    }
     // CRA-style env
     // @ts-ignore
     if (typeof process !== "undefined" && process.env?.REACT_APP_API_URL) {
@@ -26,7 +32,7 @@ function getApiBaseUrl(): string {
     // ignore and fall back
   }
 
-  // Return empty string to use relative URLs for Vite proxy
+  // Return empty string to use relative URLs for Next.js rewrites / Vite proxy
   return "";
 }
 

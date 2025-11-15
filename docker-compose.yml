@@ -20,23 +20,27 @@ services:
       retries: 3
       start_period: 40s
 
-  # 프론트엔드 Web 서비스
+  # 프론트엔드 Web 서비스 (Next.js)
   frontend-web:
     build:
       context: .
       dockerfile: ./frontend-web/Dockerfile
     container_name: minibuskingbig-frontend-web
     ports:
-      - "80:80"
+      - "5173:5173"
+    environment:
+      - API_URL=http://backend:8080
+      - NODE_ENV=production
     depends_on:
       - backend
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5173"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 40s
 
 networks:
   app-network:
