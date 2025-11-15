@@ -20,14 +20,33 @@ MiniBuskingBig/
 
 ## 빠른 시작
 
-### 1. 백엔드 실행
+### 🐳 Docker로 실행 (권장)
+
+```bash
+# 전체 애플리케이션 실행
+docker-compose up
+
+# 백그라운드에서 실행
+docker-compose up -d
+
+# 종료
+docker-compose down
+```
+
+**접속:**
+- 프론트엔드: http://localhost
+- 백엔드 API: http://localhost:8080
+
+### 💻 로컬 환경에서 실행
+
+#### 1. 백엔드 실행
 
 ```powershell
 cd backend
 mvn spring-boot:run
 ```
 
-### 2. Web 프론트엔드 실행
+#### 2. Web 프론트엔드 실행
 
 ```powershell
 cd frontend-web
@@ -35,7 +54,9 @@ npm install
 npm run dev
 ```
 
-### 3. 모바일 프론트엔드 실행
+**접속:** http://localhost:5173
+
+#### 3. 모바일 프론트엔드 실행
 
 ```powershell
 cd frontend-mobile
@@ -207,13 +228,125 @@ const { data, loading, error } = useFetch<User>("/api/user", {
 - SQL injection 방지 → Prepared Statement 사용
 - CORS 설정은 최소한만 허용
 
+## 🚀 환경 세팅
+
+### 초기 환경 설정 (최초 1회)
+
+```bash
+# Linux/Mac
+chmod +x scripts/setup-env.sh
+./scripts/setup-env.sh
+
+# Windows PowerShell
+.\scripts\setup-env.ps1
+```
+
+이 스크립트는 다음을 자동으로 설정합니다:
+- Git develop 브랜치 생성
+- Docker 환경 확인
+- 환경 변수 파일 생성
+- .gitignore 업데이트
+
+### Git 브랜치 전략
+
+자세한 내용은 [docs/GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md)를 참조하세요.
+
+```bash
+# develop 브랜치에서 새로운 기능 개발
+git checkout develop
+git checkout -b feature/기능명
+
+# 작업 후 커밋
+git add .
+git commit -m "feat(스코프): 기능 설명"
+
+# Push 및 PR
+git push -u origin feature/기능명
+```
+
+## 🐳 Docker 사용법
+
+### 프로덕션 빌드
+
+```bash
+# 이미지 빌드
+docker-compose build
+
+# 실행
+docker-compose up
+```
+
+### 개발 모드 (핫 리로드)
+
+```bash
+# 개발 환경으로 실행
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+### Docker 명령어
+
+```bash
+# 컨테이너 상태 확인
+docker-compose ps
+
+# 로그 확인
+docker-compose logs -f
+
+# 특정 서비스만 재시작
+docker-compose restart backend
+
+# 컨테이너 및 볼륨 삭제
+docker-compose down -v
+```
+
+## 📁 프로젝트 구조 (상세)
+
+```
+MiniBuskingBig/
+├── backend/                    # Spring Boot 백엔드
+│   ├── src/
+│   │   ├── main/java/com/minibuskingbig/
+│   │   │   ├── controller/    # REST API 컨트롤러
+│   │   │   ├── service/       # 비즈니스 로직
+│   │   │   ├── repository/    # 데이터베이스 레이어
+│   │   │   ├── dto/          # Data Transfer Objects
+│   │   │   └── config/       # 설정 (CORS 등)
+│   │   └── resources/
+│   ├── Dockerfile            # 프로덕션 Dockerfile
+│   └── pom.xml              # Maven 설정
+│
+├── frontend-web/              # React Web 프론트엔드
+│   ├── src/
+│   │   ├── hooks/           # 커스텀 훅 (useApi, useFetch)
+│   │   ├── components/      # React 컴포넌트
+│   │   └── App.tsx
+│   ├── Dockerfile           # 프로덕션 Dockerfile
+│   ├── nginx.conf           # Nginx 설정 (프록시)
+│   ├── vite.config.ts       # Vite 설정 (프록시)
+│   └── package.json
+│
+├── frontend-mobile/          # React Native 모바일
+│   └── ...
+│
+├── shared/                   # 공유 코드
+│   └── api-client.ts        # API 클라이언트
+│
+├── docs/                    # 문서
+│   ├── GIT_WORKFLOW.md     # Git 브랜치 전략
+│   └── SETUP.md            # 환경 설정 가이드
+│
+├── scripts/                # 유틸리티 스크립트
+│   ├── setup-env.sh       # 환경 세팅 (Linux/Mac)
+│   └── setup-env.ps1      # 환경 세팅 (Windows)
+│
+├── docker-compose.yml      # Docker Compose (프로덕션)
+├── docker-compose.dev.yml  # Docker Compose (개발)
+└── .gitignore
+```
+
 ## 다음 단계
 
 - 상태 관리 (Redux, Zustand 등)
 - 데이터베이스 연동
 - 인증/인가 구현
 - 로깅 시스템 (Slf4j + Logback) 통합
-
-```
-
-```

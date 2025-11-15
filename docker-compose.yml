@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # 백엔드 서비스
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: minibuskingbig-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/hello"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 프론트엔드 Web 서비스
+  frontend-web:
+    build:
+      context: .
+      dockerfile: ./frontend-web/Dockerfile
+    container_name: minibuskingbig-frontend-web
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  app-network:
+    driver: bridge
+
+# 개발 환경용 docker-compose 오버라이드
+# 사용법: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
