@@ -17,7 +17,7 @@ export const apiClient = {
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
       }
-      return await response.text() as T;
+      return (await response.text()) as T;
     } catch (error) {
       console.error(`GET ${endpoint} failed:`, error);
       throw error;
@@ -34,7 +34,7 @@ export const apiClient = {
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
       }
-      return await response.json() as T;
+      return (await response.json()) as T;
     } catch (error) {
       console.error(`POST ${endpoint} failed:`, error);
       throw error;
@@ -51,7 +51,7 @@ export const apiClient = {
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
       }
-      return await response.json() as T;
+      return (await response.json()) as T;
     } catch (error) {
       console.error(`PUT ${endpoint} failed:`, error);
       throw error;
@@ -66,7 +66,7 @@ export const apiClient = {
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
       }
-      return await response.json() as T;
+      return (await response.json()) as T;
     } catch (error) {
       console.error(`DELETE ${endpoint} failed:`, error);
       throw error;

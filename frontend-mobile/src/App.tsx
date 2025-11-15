@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { apiClient } from "../../shared/api-client";
@@ -21,7 +20,6 @@ export default function App(): React.ReactElement {
       <Text style={styles.text}>
         {loading ? "Loading..." : `Backend says: ${msg}`}
       </Text>
-      <StatusBar style="auto" />
     </View>
   );
 }
