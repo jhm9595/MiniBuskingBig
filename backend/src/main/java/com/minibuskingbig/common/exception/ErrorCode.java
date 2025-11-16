@@ -50,7 +50,14 @@ public enum ErrorCode {
 
     // Payment
     PAYMENT_FAILED(HttpStatus.BAD_REQUEST, "P001", "결제에 실패했습니다."),
-    REFUND_FAILED(HttpStatus.BAD_REQUEST, "P002", "환불에 실패했습니다.");
+    REFUND_FAILED(HttpStatus.BAD_REQUEST, "P002", "환불에 실패했습니다."),
+
+    // Venue
+    VENUE_NOT_FOUND(HttpStatus.NOT_FOUND, "V001", "장소를 찾을 수 없습니다."),
+    VENUE_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "V002", "활성화되지 않은 장소입니다."),
+    BOOKING_CONFLICT(HttpStatus.CONFLICT, "V003", "예약 시간이 중복됩니다."),
+    BOOKING_NOT_FOUND(HttpStatus.NOT_FOUND, "V004", "예약을 찾을 수 없습니다."),
+    ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND, "V005", "요청한 항목을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
